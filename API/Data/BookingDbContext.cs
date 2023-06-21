@@ -40,12 +40,6 @@ namespace API.Data
                         .WithOne(education => education.University)
                         .HasForeignKey(education => education.UniversityGuid);
 
-            /*modelBuilder.Entity<Education>()
-                        .HasOne(e => e.University)
-                        .WithMany(u => u.Educations)
-                        .HasForeignKey(e => e.UniversityGuid)
-                        .OnDelete(DeleteBehavior.Cascade);*/
-
             // Education - Employee (One to One)
             modelBuilder.Entity<Employee>()
                 .HasOne(employee => employee.Education)
