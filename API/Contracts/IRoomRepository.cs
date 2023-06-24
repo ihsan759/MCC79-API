@@ -2,12 +2,7 @@
 
 namespace API.Contracts
 {
-    public interface IRoomRepository
+    public interface IRoomRepository : IGeneralRepository<Room>
     {
-        ICollection<Room> GetAll();
-        Room? GetByGuid(Guid guid);
-        Room Create(Room university);
-        bool Update(Room university);
-        bool Delete(Guid guid);
     }
 }
