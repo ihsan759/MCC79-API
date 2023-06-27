@@ -1,4 +1,4 @@
-﻿using API.Utilities.Emuns;
+﻿using API.Utilities.Enums;
 
 namespace API.DTOs.Employees
 {

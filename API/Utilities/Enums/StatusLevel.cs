@@ -1,4 +1,4 @@
-﻿namespace API.Utilities.Emuns
+﻿namespace API.Utilities.Enums
 {
     public enum StatusLevel
     {
