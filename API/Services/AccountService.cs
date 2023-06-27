@@ -54,11 +54,14 @@ namespace API.Services
         {
             var account = new Account
             {
-                Guid = new Guid(),
+                Guid = newAccountDto.Guid,
                 IsDeleted = newAccountDto.IsDeleted,
                 IsUsed = newAccountDto.IsUsed,
                 CreatedDate = DateTime.Now,
-                ModifiedDate = DateTime.Now
+                ModifiedDate = DateTime.Now,
+                Password = newAccountDto.Password,
+                ExpiredTime = newAccountDto.ExpiredTime,
+                Otp = newAccountDto.Otp
             };
 
             var createdAccount = _accountRepository.Create(account);
@@ -93,7 +96,10 @@ namespace API.Services
                 IsUsed = updateAccountDto.IsUsed,
                 IsDeleted = updateAccountDto.IsDeleted,
                 ModifiedDate = DateTime.Now,
-                CreatedDate = getAccount!.CreatedDate
+                CreatedDate = getAccount!.CreatedDate,
+                Otp = updateAccountDto.Otp,
+                ExpiredTime = updateAccountDto.ExpiredTime,
+                Password = updateAccountDto.Password,
             };
 
             var isUpdate = _accountRepository.Update(account);
