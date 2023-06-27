@@ -57,7 +57,7 @@ namespace API.Services
         {
             var education = new Education
             {
-                Guid = new Guid(),
+                Guid = newEducationDto.Guid,
                 Major = newEducationDto.Major,
                 Degree = newEducationDto.Degree,
                 Gpa = newEducationDto.Gpa,
