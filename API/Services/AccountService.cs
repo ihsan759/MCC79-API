@@ -1,6 +1,7 @@
 ﻿using API.Contracts;
 using API.DTOs.Accounts;
 using API.Models;
+using API.Utilities;
 
 namespace API.Services
 {
@@ -27,6 +28,7 @@ namespace API.Services
                                                     Guid = account.Guid,
                                                     IsDeleted = account.IsDeleted,
                                                     IsUsed = account.IsUsed,
+                                                    Password = account.Password,
                                                 }).ToList();
 
             return toDto; // Account found
@@ -59,7 +61,7 @@ namespace API.Services
                 IsUsed = newAccountDto.IsUsed,
                 CreatedDate = DateTime.Now,
                 ModifiedDate = DateTime.Now,
-                Password = newAccountDto.Password,
+                Password = Hashing.HashPassword(newAccountDto.Password),
                 ExpiredTime = newAccountDto.ExpiredTime,
                 Otp = newAccountDto.Otp
             };
@@ -75,6 +77,7 @@ namespace API.Services
                 Guid = createdAccount.Guid,
                 IsDeleted = createdAccount.IsDeleted,
                 IsUsed = createdAccount.IsUsed,
+                Password = createdAccount.Password,
             };
 
             return toDto; // Account created
@@ -99,7 +102,7 @@ namespace API.Services
                 CreatedDate = getAccount!.CreatedDate,
                 Otp = updateAccountDto.Otp,
                 ExpiredTime = updateAccountDto.ExpiredTime,
-                Password = updateAccountDto.Password,
+                Password = Hashing.HashPassword(updateAccountDto.Password),
             };
 
             var isUpdate = _accountRepository.Update(account);
