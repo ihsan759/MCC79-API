@@ -102,7 +102,7 @@ namespace API.Controllers
             }
             if (update is 0)
             {
-                return BadRequest(new ResponseHandlers<UpdateUniversityDto>
+                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandlers<UpdateUniversityDto>
                 {
                     Code = StatusCodes.Status500InternalServerError,
                     Status = HttpStatusCode.InternalServerError.ToString(),
@@ -133,7 +133,7 @@ namespace API.Controllers
             }
             if (delete is 0)
             {
-                return BadRequest(new ResponseHandlers<GetUniversityDto>
+                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandlers<GetUniversityDto>
                 {
                     Code = StatusCodes.Status500InternalServerError,
                     Status = HttpStatusCode.InternalServerError.ToString(),

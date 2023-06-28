@@ -102,7 +102,7 @@ namespace API.Controllers
             }
             if (update is 0)
             {
-                return BadRequest(new ResponseHandlers<UpdateRoomDto>
+                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandlers<UpdateRoomDto>
                 {
                     Code = StatusCodes.Status500InternalServerError,
                     Status = HttpStatusCode.InternalServerError.ToString(),
@@ -133,7 +133,7 @@ namespace API.Controllers
             }
             if (delete is 0)
             {
-                return BadRequest(new ResponseHandlers<GetRoomDto>
+                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandlers<GetRoomDto>
                 {
                     Code = StatusCodes.Status500InternalServerError,
                     Status = HttpStatusCode.InternalServerError.ToString(),
