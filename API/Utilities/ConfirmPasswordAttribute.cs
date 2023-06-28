@@ -2,10 +2,10 @@
 
 namespace API.Utilities
 {
-    public class ConfirmPassword : ValidationAttribute
+    public class ConfirmPasswordAttribute : ValidationAttribute
     {
         private readonly string _password;
-        public ConfirmPassword(string password)
+        public ConfirmPasswordAttribute(string password)
         {
             _password = password;
         }
