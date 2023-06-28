@@ -29,6 +29,8 @@ namespace API.Services
                                                     IsDeleted = account.IsDeleted,
                                                     IsUsed = account.IsUsed,
                                                     Password = account.Password,
+                                                    Otp = account.Otp,
+                                                    ExpiredTime = account.ExpiredTime,
                                                 }).ToList();
 
             return toDto; // Account found
@@ -47,6 +49,9 @@ namespace API.Services
                 Guid = account.Guid,
                 IsDeleted = account.IsDeleted,
                 IsUsed = account.IsUsed,
+                Password = account.Password,
+                Otp = account.Otp,
+                ExpiredTime = account.ExpiredTime,
             };
 
             return toDto; // accounts found
