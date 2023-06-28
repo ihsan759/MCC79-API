@@ -5,5 +5,6 @@
         public Guid Guid { get; set; }
         public bool IsDeleted { get; set; }
         public bool IsUsed { get; set; }
+        public string Password { get; set; }
     }
 }
