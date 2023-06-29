@@ -149,13 +149,18 @@ namespace API.Services
 
         public IEnumerable<DetailBookingDto> DetailBooking()
         {
-            var bookings = _bookingRepository.GetByDateNow();
-            if (!bookings.Any())
+            var bookings = _bookingRepository.GetAll();
+            if (bookings == null)
             {
                 return null; // No Booking  found
             }
 
-            /*var detailBookings = (
+
+            // versi LINQ
+            var employees = _employeeRepository.GetAll();
+            var rooms = _roomRepository.GetAll();
+
+            var detailBookings = (
                 from booking in bookings
                 join employee in employees on booking.EmployeeGuid equals employee.Guid
                 join room in rooms on booking.RoomGuid equals room.Guid
@@ -168,9 +173,9 @@ namespace API.Services
                     Floor = room.Floor,
                     BookedBy = employee.FirstName + " " + employee.LastName,
                 }
-            ).ToList();*/
+            ).ToList();
 
-            return bookings;
+            return detailBookings;
         }
     }
 }

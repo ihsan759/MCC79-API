@@ -14,6 +14,7 @@ namespace API.Repositories
             /*return _context.Set<Booking>().Where(b => b.StartDate <= DateTime.Now).Where(b => b.EndDate <= DateTime.Now).ToList();*/
 
 
+            // versi Repository
             return _context.Set<Booking>()
                .Join(
                    _context.Set<Employee>(),
@@ -30,6 +31,7 @@ namespace API.Repositories
                .Where(b => b.Bookings.StartDate <= DateTime.Now).Where(b => b.Bookings.EndDate >= DateTime.Now)
                .Select(joinData => new DetailBookingDto
                {
+
                    BookingGuid = joinData.Bookings.Guid,
                    RoomName = joinData.Rooms.Name,
                    Status = joinData.Bookings.Status,
