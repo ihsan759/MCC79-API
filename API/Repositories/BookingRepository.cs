@@ -9,12 +9,9 @@ namespace API.Repositories
     {
         public BookingRepository(BookingDbContext context) : base(context) { }
 
+        // versi Repository
         public ICollection<DetailBookingDto>? GetByDateNow()
         {
-            /*return _context.Set<Booking>().Where(b => b.StartDate <= DateTime.Now).Where(b => b.EndDate <= DateTime.Now).ToList();*/
-
-
-            // versi Repository
             return _context.Set<Booking>()
                .Join(
                    _context.Set<Employee>(),
