@@ -41,6 +41,30 @@ namespace API.Controllers
             });
         }
 
+        [HttpGet("detail")]
+        public IActionResult GetDetail()
+        {
+            var entities = _service.DetailBooking();
+
+            if (entities == null)
+            {
+                return NotFound(new ResponseHandlers<DetailBookingDto>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "Data not found"
+                });
+            }
+
+            return Ok(new ResponseHandlers<IEnumerable<DetailBookingDto>>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Data found",
+                Data = entities
+            });
+        }
+
         [HttpGet("{guid}")]
         public IActionResult GetByGuid(Guid guid)
         {
