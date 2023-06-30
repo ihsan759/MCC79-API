@@ -41,6 +41,50 @@ namespace API.Controllers
             });
         }
 
+        [HttpPost("login")]
+        public ActionResult Login(LoginDto loginDto)
+        {
+            var loginResult = _authService.Login(loginDto);
+            if (loginResult == "0")
+            {
+                return NotFound(new ResponseHandlers<LoginDto>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "Account not found"
+                });
+            }
+
+            if (loginResult == "-1")
+            {
+                return BadRequest(new ResponseHandlers<LoginDto>
+                {
+                    Code = StatusCodes.Status400BadRequest,
+                    Status = HttpStatusCode.BadRequest.ToString(),
+                    Message = "Password is incorrect"
+                });
+            }
+
+            if (loginResult == "-2")
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new ResponseHandlers<LoginDto>
+                {
+                    Code = StatusCodes.Status500InternalServerError,
+                    Status = HttpStatusCode.InternalServerError.ToString(),
+                    Message = "Error retrieving when creating token"
+                });
+            }
+
+            return Ok(new ResponseHandlers<String>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Login Success",
+                Data = loginResult
+            });
+        }
+
+
         [HttpPut("changePassword")]
         public IActionResult Update(ChangePasswordDto changePasswordDto)
         {

@@ -2,6 +2,7 @@
 using API.DTOs.Auth;
 using API.Models;
 using API.Utilities;
+using System.Security.Claims;
 
 namespace API.Services
 {
@@ -11,19 +12,74 @@ namespace API.Services
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IUniversityRepository _universityRepository;
         private readonly IEducationRepository _educationRepository;
+        private readonly ITokenHandler _tokenHandler;
+        private readonly IAccountRoleRepository _accountRoleRepository;
+        private readonly IRoleRepository _roleRepository;
 
-        public AuthService(IAccountRepository accountRepository, IEmployeeRepository employeeRepository, IUniversityRepository universityRepository, IEducationRepository educationRepository)
+        public AuthService(IAccountRepository accountRepository, IEmployeeRepository employeeRepository, IUniversityRepository universityRepository, IEducationRepository educationRepository, ITokenHandler tokenHandler, IAccountRoleRepository accountRoleRepository, IRoleRepository roleRepository)
         {
             _accountRepository = accountRepository;
             _employeeRepository = employeeRepository;
             _universityRepository = universityRepository;
             _educationRepository = educationRepository;
+            _tokenHandler = tokenHandler;
+            _accountRoleRepository = accountRoleRepository;
+            _roleRepository = roleRepository;
+        }
+
+        public string Login(LoginDto loginDto)
+        {
+            var employee = _employeeRepository.CheckEmail(loginDto.Email);
+            if (employee is null)
+            {
+                return "0";
+            }
+
+            var account = _accountRepository.GetByGuid(employee.Guid);
+            if (account is null)
+            {
+                return "0";
+            }
+
+            if (!Hashing.ValidatePassword(loginDto.Password, account.Password))
+            {
+                return "-1";
+            }
+
+            var accountRole = _accountRoleRepository.GetByGuidEmployee(account.Guid);
+
+
+            var claims = new List<Claim>() {
+                new Claim("NIK", employee.Nik),
+                new Claim("FullName", $"{employee.FirstName} {employee.LastName}"),
+                new Claim("Email", loginDto.Email)
+            };
+
+            claims.AddRange(accountRole.Select(role => new Claim("Role", role.RoleGuid.ToString())));
+
+            try
+            {
+                var getToken = _tokenHandler.GenerateToken(claims);
+                return getToken;
+            }
+            catch
+            {
+                return "-2";
+            }
         }
 
         public RegisterDto Register(RegisterDto registerDto)
         {
             try
             {
+
+                var role = _roleRepository.GetByName("User");
+
+                if (role is null)
+                {
+                    return null;
+                }
+
                 var employee = new Employee
                 {
                     Guid = new Guid(),
@@ -75,6 +131,13 @@ namespace API.Services
                 };
                 var createdEducation = _educationRepository.Create(education);
 
+                var accountRole = new AccountRole
+                {
+                    Guid = new Guid(),
+                    AccountGuid = createdAccount.Guid,
+                    RoleGuid = role.Guid
+                };
+                var createdAccountRole = _accountRoleRepository.Create(accountRole);
 
                 var toDto = new RegisterDto
                 {
