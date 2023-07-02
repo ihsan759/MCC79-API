@@ -1,4 +1,5 @@
 ﻿using API.Contracts;
+using API.Data;
 using API.DTOs.Auth;
 using API.Models;
 using API.Utilities;
@@ -15,8 +16,10 @@ namespace API.Services
         private readonly ITokenHandler _tokenHandler;
         private readonly IAccountRoleRepository _accountRoleRepository;
         private readonly IRoleRepository _roleRepository;
+        private readonly IEmailHandler _emailHandler;
+        private readonly BookingDbContext _bookingDbContext;
 
-        public AuthService(IAccountRepository accountRepository, IEmployeeRepository employeeRepository, IUniversityRepository universityRepository, IEducationRepository educationRepository, ITokenHandler tokenHandler, IAccountRoleRepository accountRoleRepository, IRoleRepository roleRepository)
+        public AuthService(IAccountRepository accountRepository, IEmployeeRepository employeeRepository, IUniversityRepository universityRepository, IEducationRepository educationRepository, ITokenHandler tokenHandler, IAccountRoleRepository accountRoleRepository, IRoleRepository roleRepository, IEmailHandler emailHandler, BookingDbContext bookingDbContext)
         {
             _accountRepository = accountRepository;
             _employeeRepository = employeeRepository;
@@ -25,6 +28,8 @@ namespace API.Services
             _tokenHandler = tokenHandler;
             _accountRoleRepository = accountRoleRepository;
             _roleRepository = roleRepository;
+            _emailHandler = emailHandler;
+            _bookingDbContext = bookingDbContext;
         }
 
         public string Login(LoginDto loginDto)
@@ -70,6 +75,7 @@ namespace API.Services
 
         public RegisterDto Register(RegisterDto registerDto)
         {
+            using var transaction = _bookingDbContext.Database.BeginTransaction();
             try
             {
 
@@ -109,15 +115,21 @@ namespace API.Services
                 };
 
                 var createdAccount = _accountRepository.Create(account);
-                var university = new University
+
+                var universityEntity = _universityRepository.GetByCodeAndName(registerDto.UniversityCode, registerDto.UniversityName);
+
+                if (universityEntity == null)
                 {
-                    Guid = new Guid(),
-                    Code = registerDto.UniversityCode,
-                    Name = registerDto.UniversityName,
-                    CreatedDate = DateTime.Now,
-                    ModifiedDate = DateTime.Now,
-                };
-                var createdUniversity = _universityRepository.Create(university);
+                    var university = new University
+                    {
+                        Guid = new Guid(),
+                        Code = registerDto.UniversityCode,
+                        Name = registerDto.UniversityName,
+                        CreatedDate = DateTime.Now,
+                        ModifiedDate = DateTime.Now,
+                    };
+                    universityEntity = _universityRepository.Create(university);
+                }
 
                 var education = new Education
                 {
@@ -125,7 +137,7 @@ namespace API.Services
                     Major = registerDto.Major,
                     Degree = registerDto.Degree,
                     Gpa = registerDto.Gpa,
-                    UniversityGuid = university.Guid,
+                    UniversityGuid = universityEntity.Guid,
                     CreatedDate = DateTime.Now,
                     ModifiedDate = DateTime.Now,
                 };
@@ -151,18 +163,53 @@ namespace API.Services
                     Major = createdEducation.Major,
                     Degree = createdEducation.Degree,
                     Gpa = createdEducation.Gpa,
-                    UniversityCode = createdUniversity.Code,
-                    UniversityName = createdUniversity.Name,
+                    UniversityCode = universityEntity.Code,
+                    UniversityName = universityEntity.Name,
                     Password = createdAccount.Password,
                     ConfirmPassword = createdAccount.Password
                 };
+                transaction.Commit();
                 return toDto;
             }
             catch
             {
+                transaction.Rollback();
                 return null;
             }
 
+        }
+
+        public int ForgotPassword(ForgotPasswordDto forgotPassword)
+        {
+            var employee = _employeeRepository.CheckEmail(forgotPassword.Email);
+            if (employee is null)
+                return 0; // Email not found
+
+            var account = _accountRepository.GetByGuid(employee.Guid);
+            if (account is null)
+                return -1;
+
+            var otp = new Random().Next(111111, 999999);
+            var isUpdated = _accountRepository.Update(new Account
+            {
+                Guid = account.Guid,
+                Password = account.Password,
+                IsDeleted = account.IsDeleted,
+                Otp = otp,
+                ExpiredTime = DateTime.Now.AddMinutes(5),
+                IsUsed = false,
+                CreatedDate = account.CreatedDate,
+                ModifiedDate = DateTime.Now
+            });
+
+            if (!isUpdated)
+                return -1;
+
+            _emailHandler.SendEmail(forgotPassword.Email,
+                                    "Forgot Password",
+                                    $"Your OTP is {otp}");
+
+            return 1;
         }
 
         public string GenericNik()

@@ -2,7 +2,7 @@
 
 namespace API.DTOs.Bookings
 {
-    public class DetailBookingDto
+    public class BookingRoomToday
     {
         public Guid BookingGuid { get; set; }
         public string RoomName { get; set; }

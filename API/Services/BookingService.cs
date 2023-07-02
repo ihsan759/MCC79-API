@@ -147,7 +147,7 @@ namespace API.Services
             return 1;
         }
 
-        public IEnumerable<DetailBookingDto> DetailBooking()
+        public IEnumerable<BookingRoomToday> BookingNow()
         {
             var bookings = _bookingRepository.GetAll();
             if (bookings == null)
@@ -160,12 +160,12 @@ namespace API.Services
             var employees = _employeeRepository.GetAll();
             var rooms = _roomRepository.GetAll();
 
-            var detailBookings = (
+            var bookingNow = (
                 from booking in bookings
                 join employee in employees on booking.EmployeeGuid equals employee.Guid
                 join room in rooms on booking.RoomGuid equals room.Guid
                 where booking.StartDate <= DateTime.Now.Date && booking.EndDate >= DateTime.Now
-                select new DetailBookingDto
+                select new BookingRoomToday
                 {
                     BookingGuid = booking.Guid,
                     RoomName = room.Name,
@@ -175,7 +175,43 @@ namespace API.Services
                 }
             ).ToList();
 
-            return detailBookings;
+            return bookingNow;
+        }
+
+        public ICollection<BookingDetailsDto>? GetBookingDetails()
+        {
+            var bookings = _bookingRepository.GetAll();
+            if (bookings == null)
+            {
+                return null; // No Booking  found
+            }
+
+            var employees = _employeeRepository.GetAll();
+            var rooms = _roomRepository.GetAll();
+
+            var getBookingDetails = (
+                from booking in bookings
+                join employee in employees on booking.EmployeeGuid equals employee.Guid
+                join room in rooms on booking.RoomGuid equals room.Guid
+                select new BookingDetailsDto
+                {
+                    Guid = booking.Guid,
+                    BookedNik = employee.Nik,
+                    BookedBy = employee.FirstName + " " + employee.LastName,
+                    RoomName = room.Name,
+                    StartDate = booking.StartDate,
+                    EndDate = booking.EndDate,
+                    Status = booking.Status,
+                    Remarks = booking.Remarks
+                }
+            ).ToList();
+
+            return getBookingDetails;
+        }
+
+        public BookingDetailsDto? GetBookingDetailsByGuid(Guid Guid)
+        {
+            return GetBookingDetails()?.FirstOrDefault(x => x.Guid == Guid);
         }
     }
 }

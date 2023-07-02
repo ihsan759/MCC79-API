@@ -10,7 +10,7 @@ namespace API.Repositories
         public BookingRepository(BookingDbContext context) : base(context) { }
 
         // versi Repository
-        public ICollection<DetailBookingDto>? GetByDateNow()
+        public ICollection<BookingRoomToday>? GetByDateNow()
         {
             return _context.Set<Booking>()
                .Join(
@@ -26,7 +26,7 @@ namespace API.Repositories
                    (joinedData, room) => new { joinedData.Employees, joinedData.Bookings, Rooms = room }
                )
                .Where(b => b.Bookings.StartDate <= DateTime.Now).Where(b => b.Bookings.EndDate >= DateTime.Now)
-               .Select(joinData => new DetailBookingDto
+               .Select(joinData => new BookingRoomToday
                {
 
                    BookingGuid = joinData.Bookings.Guid,

@@ -148,5 +148,29 @@ namespace API.Controllers
                 Message = "Successfully deleted"
             });
         }
+
+        [HttpGet("Unused")]
+        public IActionResult GetUnusedRoom()
+        {
+            var entities = _service.GetUnusedRoom();
+
+            if (entities == null)
+            {
+                return NotFound(new ResponseHandlers<UnusedRoomDto>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "Data not found"
+                });
+            }
+
+            return Ok(new ResponseHandlers<IEnumerable<UnusedRoomDto>>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Data found",
+                Data = entities
+            });
+        }
     }
 }

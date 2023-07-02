@@ -41,14 +41,14 @@ namespace API.Controllers
             });
         }
 
-        [HttpGet("detail")]
-        public IActionResult GetDetail()
+        [HttpGet("Get-booking-now")]
+        public IActionResult GetBookingNow()
         {
-            var entities = _service.DetailBooking();
+            var entities = _service.BookingNow();
 
             if (entities == null)
             {
-                return NotFound(new ResponseHandlers<DetailBookingDto>
+                return NotFound(new ResponseHandlers<BookingRoomToday>
                 {
                     Code = StatusCodes.Status404NotFound,
                     Status = HttpStatusCode.NotFound.ToString(),
@@ -56,7 +56,55 @@ namespace API.Controllers
                 });
             }
 
-            return Ok(new ResponseHandlers<IEnumerable<DetailBookingDto>>
+            return Ok(new ResponseHandlers<IEnumerable<BookingRoomToday>>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Data found",
+                Data = entities
+            });
+        }
+
+        [HttpGet("Deails")]
+        public IActionResult GetBookingDetails()
+        {
+            var entities = _service.GetBookingDetails();
+
+            if (entities == null)
+            {
+                return NotFound(new ResponseHandlers<BookingDetailsDto>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "Data not found"
+                });
+            }
+
+            return Ok(new ResponseHandlers<IEnumerable<BookingDetailsDto>>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Data found",
+                Data = entities
+            });
+        }
+
+        [HttpGet("Deails/{guid}")]
+        public IActionResult GetBookingDetails(Guid guid)
+        {
+            var entities = _service.GetBookingDetailsByGuid(guid);
+
+            if (entities == null)
+            {
+                return NotFound(new ResponseHandlers<BookingDetailsDto>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "Data not found"
+                });
+            }
+
+            return Ok(new ResponseHandlers<BookingDetailsDto>
             {
                 Code = StatusCodes.Status200OK,
                 Status = HttpStatusCode.OK.ToString(),
