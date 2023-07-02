@@ -220,5 +220,30 @@ namespace API.Controllers
                 Message = "Successfully deleted"
             });
         }
+
+        [HttpGet("Bookings-lenght")]
+        public IActionResult CalculateBookingLenght()
+        {
+            var entities = _service.BookingDuration();
+
+            if (entities == null)
+            {
+                return NotFound(new ResponseHandlers<BookingLengthDto>
+                {
+                    Code = StatusCodes.Status404NotFound,
+                    Status = HttpStatusCode.NotFound.ToString(),
+                    Message = "Data not found"
+                });
+            }
+
+            return Ok(new ResponseHandlers<IEnumerable<BookingLengthDto>>
+            {
+                Code = StatusCodes.Status200OK,
+                Status = HttpStatusCode.OK.ToString(),
+                Message = "Data found",
+                Data = entities
+            });
+        }
+
     }
 }

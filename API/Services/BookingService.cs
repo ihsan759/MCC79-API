@@ -213,5 +213,60 @@ namespace API.Services
         {
             return GetBookingDetails()?.FirstOrDefault(x => x.Guid == Guid);
         }
+
+        public IEnumerable<BookingLengthDto> BookingDuration()
+        {
+            var bookings = _bookingRepository.GetAll();
+            if (bookings == null)
+            {
+                return null;
+            }
+
+            var rooms = _roomRepository.GetAll();
+
+            var entities = (from booking in bookings
+                            join room in rooms on booking.RoomGuid equals room.Guid
+                            select new
+                            {
+                                Guid = room.Guid,
+                                StartDate = booking.StartDate,
+                                EndDate = booking.EndDate,
+                                RoomName = room.Name,
+                            }).ToList();
+
+            var bookingDurations = new List<BookingLengthDto>();
+
+            foreach (var entity in entities)
+            {
+                TimeSpan duration = entity.EndDate - entity.StartDate;
+
+                int totalDays = (int)duration.TotalDays;
+                int weekends = 0;
+
+                for (int i = 0; i < totalDays; i++)
+                {
+                    var currentDate = entity.StartDate.AddDays(i);
+                    if (currentDate.DayOfWeek == DayOfWeek.Saturday || currentDate.DayOfWeek == DayOfWeek.Sunday)
+                    {
+                        weekends++;
+                    }
+                }
+
+                TimeSpan bookingLenght = duration - TimeSpan.FromDays(weekends);
+
+                var bookingDuration = new BookingLengthDto
+                {
+                    RoomGuid = entity.Guid,
+                    RoomName = entity.RoomName,
+                    BookingLenght = bookingLenght
+                };
+
+                bookingDurations.Add(bookingDuration);
+
+            }
+
+            return bookingDurations;
+
+        }
     }
 }
