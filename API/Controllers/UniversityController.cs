@@ -1,6 +1,8 @@
 ﻿using API.DTOs.Universities;
 using API.Services;
 using API.Utilities;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -8,6 +10,8 @@ namespace API.Controllers
 {
     [ApiController]
     [Route("api/universities")]
+    [Authorize(Roles = "User")]
+    [EnableCors("metrodata-academy")]
     public class UniversityController : ControllerBase
     {
         private readonly UniversityService _service;
@@ -18,6 +22,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult GetAll()
         {
             var entities = _service.GetUniversity();
