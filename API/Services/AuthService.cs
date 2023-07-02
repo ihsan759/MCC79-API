@@ -52,6 +52,9 @@ namespace API.Services
             }
 
             var accountRole = _accountRoleRepository.GetByGuidEmployee(account.Guid);
+            var getRoleNameByAccountRole = from ar in accountRole
+                                           join r in _roleRepository.GetAll() on ar.RoleGuid equals r.Guid
+                                           select r.Name;
 
 
             var claims = new List<Claim>() {
@@ -60,7 +63,7 @@ namespace API.Services
                 new Claim("Email", loginDto.Email)
             };
 
-            claims.AddRange(accountRole.Select(role => new Claim("Role", role.RoleGuid.ToString())));
+            claims.AddRange(getRoleNameByAccountRole.Select(role => new Claim(ClaimTypes.Role, role)));
 
             try
             {
