@@ -24,6 +24,14 @@ builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IRoomRepository, RoomRepository>();
 
+
+// Add SmtpClient
+builder.Services.AddTransient<IEmailHandler, EmailHandler>(_ => new EmailHandler(
+    builder.Configuration["EmailService:SmtpServer"],
+    int.Parse(builder.Configuration["EmailService:SmtpPort"]),
+    builder.Configuration["EmailService:FromEmailAddress"]
+));
+
 // Add Token Handler
 builder.Services.AddScoped<ITokenHandler, TokenHandler>();
 
@@ -41,6 +49,7 @@ builder.Services.AddScoped<AuthService>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 
 var app = builder.Build();
 
