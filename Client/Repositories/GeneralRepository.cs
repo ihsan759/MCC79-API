@@ -44,9 +44,16 @@ namespace Client.Repositories
             return entityVM;
         }
 
-        public Task<ResponseHandlers<Entity>> Get(TId id)
+        public async Task<ResponseHandlers<Entity>> Get(TId id)
         {
-            throw new NotImplementedException();
+            ResponseHandlers<Entity> entity = null;
+
+            using (var response = await httpClient.GetAsync(request + id))
+            {
+                string apiResponse = await response.Content.ReadAsStringAsync();
+                entity = JsonConvert.DeserializeObject<ResponseHandlers<Entity>>(apiResponse);
+            }
+            return entity;
         }
 
         public async Task<ResponseHandlers<Entity>> Post(Entity entity)
@@ -61,9 +68,16 @@ namespace Client.Repositories
             return entityVM;
         }
 
-        public Task<ResponseHandlers<Entity>> Put(TId id, Entity entity)
+        public async Task<ResponseHandlers<Entity>> Put(Entity entity)
         {
-            throw new NotImplementedException();
+            ResponseHandlers<Entity> entityVM = null;
+            StringContent content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json");
+            using (var response = httpClient.PutAsync(request, content).Result)
+            {
+                string apiResponse = await response.Content.ReadAsStringAsync();
+                entityVM = JsonConvert.DeserializeObject<ResponseHandlers<Entity>>(apiResponse);
+            }
+            return entityVM;
         }
     }
 }

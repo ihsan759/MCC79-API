@@ -68,6 +68,38 @@ namespace Client.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Update(GetEmployeeDto newEmploye)
+        {
+
+            var result = await repository.Put(newEmploye);
+            if (result.Status == "200")
+            {
+                TempData["Success"] = "Data berhasil diupdate";
+                return RedirectToAction(nameof(Index));
+            }
+            else if (result.Status == "409")
+            {
+                ModelState.AddModelError(string.Empty, result.Message);
+                return View();
+            }
+            return RedirectToAction(nameof(Index));
+
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(Guid guid)
+        {
+            var result = await repository.Get(guid);
+            var Employee = new GetEmployeeDto();
+
+            if (result.Data != null)
+            {
+                Employee = result.Data;
+            }
+            return View(Employee);
+        }
+
         public IActionResult Chart()
         {
             return View();

@@ -51,7 +51,7 @@
                         @Html.DisplayFor(modelItem => item.Email)
                     </td>
                     <td>
-                        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ })
+                        @Html.ActionLink("Edit", "Edit", new { guid=item.Guid })
                         <form action="/employee/delete" method="post">
                             <input type="hidden" value="@item.Guid" name="guid"/>
                             <button type="submit" class="btn btn-danger">Delete</button>

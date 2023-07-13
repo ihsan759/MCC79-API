@@ -8,7 +8,7 @@ namespace Client.Contracts
         Task<ResponseHandlers<IEnumerable<T>>> Get();
         Task<ResponseHandlers<T>> Get(X id);
         Task<ResponseHandlers<T>> Post(T entity);
-        Task<ResponseHandlers<T>> Put(X id, T entity);
+        Task<ResponseHandlers<T>> Put(T entity);
         Task<ResponseHandlers<T>> Delete(X id);
     }
 }
