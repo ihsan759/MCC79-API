@@ -1,12 +1,14 @@
 ﻿using API.DTOs.Employees;
 using API.Services;
 using API.Utilities;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
 namespace API.Controllers
 {
     [ApiController]
+    [EnableCors("metrodata-academy")]
     [Route("Api/employees")]
     public class EmployeeController : ControllerBase
     {

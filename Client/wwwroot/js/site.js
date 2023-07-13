@@ -79,7 +79,7 @@ for (i = 0; i < arrayMhsObj.length; i++) {
 
 console.log(isActive);*/
 
-$.ajax({
+/*$.ajax({
     url: "https://pokeapi.co/api/v2/pokemon"
 }).done((result) => {
     let temp = "";
@@ -92,6 +92,31 @@ $.ajax({
     })
     $("#tbodypokemon").html(temp);
 
+});*/
+
+$(document).ready(function () {
+    $('#mytable').DataTable({
+        ajax: {
+            url: "https://pokeapi.co/api/v2/pokemon",
+            dataType: "JSON",
+            dataSrc: "results",
+        },
+        columns: [
+            {
+                data: null,
+                render: (data, type, row, meta) => {
+                    return meta.row + 1;
+                }
+            },
+            { data: "name" },
+            {
+                data: "url",
+                render: (data, type, row) => {
+                    return `<button onclick="detail('${data}')" data-bs-toggle="modal" data-bs-target="#modalPokemon" class="btn btn-primary">Detail</button>`;
+                }
+            },
+        ],
+    });
 });
 
 function detail(stringURL) {
@@ -100,11 +125,17 @@ function detail(stringURL) {
     }).done(res => {
         let temp = "";
         $.each(res.types, (key, val) => {
-            temp += `<div class="badge bg-primary">${val.type.name}</div> `;
+        let colors = ["bg-danger", "bg-success", "bg-primary", "bg-warning"];
+        let randomIndex = Math.floor(Math.random() * colors.length);
+            temp += `<div class="badge ${colors[randomIndex]}">${val.type.name}</div> `;
         });
         $("#types").html(temp);
+        let content = "";
+        $.each(res.abilities, (key, val) => {
+            content += `<li>${val.ability.name}</li> `;
+        });
+        $('#content').html(content);
         $("#exampleModalLabel").html(res.name);
-        $("#title").html(res.name);
         $("#image-front").attr("src", res.sprites.front_default);
         $("#image-back").attr("src", res.sprites.back_default);
         $("#hp").css("width", res.stats[0].base_stat + "%").html("HP : " + res.stats[0].base_stat);

@@ -1,0 +1,151 @@
+﻿@{
+    Layout = "_LayoutEmployee";
+    ViewData["Title"] = "Employee";
+}
+
+<div class="container mt-5">
+    <div class="alert alert-success alert-dismissible fade show" id="myAlert" role="alert" style="display: none;">
+        
+    </div>
+    <h1 class="text-black">List Employee</h1>
+    <button type="button" class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#create">
+        Create
+    </button>
+    <table id="employee" class="table table-dark table-hover mt-2">
+        <thead>
+            <tr class="text-center">
+                <th class="col">No</th>
+                <th class="col">NIK</th>
+                <th class="col">Name</th>
+                <th class="col">Gender</th>
+                <th class="col">Birth Date</th>
+                <th class="col">Email</th>
+                <th class="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="create" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Employee</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="employeeInsert">
+                    <div class="mb-3">
+                        <label for="nik" class="form-label">NIK</label>
+                        <input type="number" class="form-control" id="nik" >
+                    </div>
+                    <div class="mb-3">
+                        <label for="firstName" class="form-label">First Name</label>
+                        <input type="text" class="form-control" id="firstName" >
+                    </div>
+                    <div class="mb-3">
+                        <label for="lastName" class="form-label">Last Name</label>
+                        <input type="text" class="form-control" id="lastName">
+                    </div>
+                    <div class="mb-3">
+                        <label for="birthDate" class="form-label">Birth Date</label>
+                        <input type="date" class="form-control" id="birthDate" required>
+                    </div>
+                    <label>Gender</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="gender" value="1" checked>
+                        <label class="form-check-label" for="gender">
+                            Male
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="gender" value="0">
+                        <label class="form-check-label" for="gender">
+                            Female
+                        </label>
+                    </div>
+                    <div class="mb-3">
+                        <label for="hiringDate" class="form-label">Hiring Date</label>
+                        <input type="date" class="form-control" id="hiringDate" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Phone</label>
+                        <input type="number" class="form-control" id="phone" required>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="edit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Employee</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="employeeUpdate">
+                    <input type="hidden" value="" id="guid"/>
+                    <div class="mb-3">
+                        <label for="nik" class="form-label">NIK</label>
+                        <input type="number" class="form-control" id="enik">
+                    </div>
+                    <div class="mb-3">
+                        <label for="firstName" class="form-label">First Name</label>
+                        <input type="text" class="form-control" id="efirstName" >
+                    </div>
+                    <div class="mb-3">
+                        <label for="lastName" class="form-label">Last Name</label>
+                        <input type="text" class="form-control" id="elastName">
+                    </div>
+                    <div class="mb-3">
+                        <label for="birthDate" class="form-label">Birth Date</label>
+                        <input type="date" class="form-control" id="ebirthDate" required>
+                    </div>
+                    <label>Gender</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="egender" value="1">
+                        <label class="form-check-label" for="gender">
+                            Male
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="egender" value="0">
+                        <label class="form-check-label" for="gender">
+                            Female
+                        </label>
+                    </div>
+                    <div class="mb-3">
+                        <label for="hiringDate" class="form-label">Hiring Date</label>
+                        <input type="date" class="form-control" id="ehiringDate" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="eemail" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Phone</label>
+                        <input type="number" class="form-control" id="ephone" required>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

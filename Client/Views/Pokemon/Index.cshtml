@@ -5,7 +5,7 @@
 
 <div class="container mt-5">
     <h1 class="text-black">List Pokemon</h1>
-    <table class="table table-dark table-hover mt-2">
+    <table id="mytable" class="table table-dark table-hover mt-2">
         <thead>
             <tr class="text-center">
                 <th class="col-1">No</th>
@@ -57,7 +57,7 @@
                 <div class="col-md-6">
                     <ul class="nav nav-tabs" id="myTabs">
                         <li class="nav-item">
-                            <a class="nav-link active" id="tab1" data-bs-toggle="tab" href="#content1">Profile</a>
+                            <a class="nav-link active" id="tab1" data-bs-toggle="tab" href="#content1">Abilities</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" id="tab2" data-bs-toggle="tab" href="#content2">Stats</a>
@@ -66,8 +66,8 @@
 
                     <div class="tab-content">
                         <div id="content1" class="tab-pane fade show active">
-                            <h3 class="mt-2" id="title">Content 1</h3>
-                            <p>Ini adalah konten dari Tab 1.</p>
+                            <h3 class="mt-2">Abilities</h3>
+                            <ul id="content"></ul>
                         </div>
                         <div id="content2" class="tab-pane fade">
                             <h3 class="mt-2">Statistik</h3>

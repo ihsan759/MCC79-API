@@ -82,9 +82,9 @@ builder.Services.AddCors(options =>
 
     options.AddPolicy("metrodata-academy", policy =>
     {
-        policy.WithOrigins("https://www.metrodata.co.id");
+        policy.WithOrigins("https://localhost:7204");
         policy.AllowAnyHeader();
-        policy.WithMethods("GET");
+        policy.AllowAnyMethod();
     });
 });
 
