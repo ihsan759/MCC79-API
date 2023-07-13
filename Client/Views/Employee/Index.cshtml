@@ -1,6 +1,9 @@
-﻿@{
+﻿@model IEnumerable<API.DTOs.Employees.GetEmployeeDto>
+
+@{
     Layout = "_LayoutEmployee";
     ViewData["Title"] = "Employee";
+    var no = 1;
 }
 
 <div class="container mt-5">
@@ -8,9 +11,11 @@
         
     </div>
     <h1 class="text-black">List Employee</h1>
-    <button type="button" class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#create">
+    @*<button type="button" class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#create">
         Create
-    </button>
+    </button>*@
+
+    <a href="/employee/create" class=" btn btn-primary mb-2">Create</a>
     <table id="employee" class="table table-dark table-hover mt-2">
         <thead>
             <tr class="text-center">
@@ -24,6 +29,39 @@
             </tr>
         </thead>
         <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => no)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nik)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FirstName) @Html.DisplayFor(modelItem => item.LastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Gender)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BirthDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ })
+                        <form action="/employee/delete" method="post">
+                            <input type="hidden" value="@item.Guid" name="guid"/>
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                        
+                        @*@Html.ActionLink("Delete", "Delete", new { id=item.Guid })*@
+                    </td>
+                </tr>
+                no++;   
+            }
         </tbody>
     </table>
 </div>

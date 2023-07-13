@@ -1,10 +1,5 @@
 $(document).ready(function () {
     $('#employee').DataTable({
-        ajax: {
-            url: "https://localhost:7103/Api/employees",
-            dataType: "JSON",
-            dataSrc: "data",
-        },
         dom: 'Bfrtip',
         buttons: [
             {
@@ -40,7 +35,7 @@ $(document).ready(function () {
                 text: 'Column'
             }
         ],
-        columns: [
+        /*columns: [
             {
                 data: null,
                 render: (data, type, row, meta) => {
@@ -76,7 +71,7 @@ $(document).ready(function () {
                             <button onclick="Edit('${data}')" class='btn btn-warning' data-bs-toggle="modal" data-bs-target="#edit">Edit</button>`;
                 }
             }
-        ],
+        ],*/
     });
 });
 
