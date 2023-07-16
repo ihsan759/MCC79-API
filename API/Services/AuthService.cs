@@ -81,14 +81,6 @@ namespace API.Services
             using var transaction = _bookingDbContext.Database.BeginTransaction();
             try
             {
-
-                var role = _roleRepository.GetByName("User");
-
-                if (role is null)
-                {
-                    return null;
-                }
-
                 var employee = new Employee
                 {
                     Guid = new Guid(),
@@ -145,6 +137,13 @@ namespace API.Services
                     ModifiedDate = DateTime.Now,
                 };
                 var createdEducation = _educationRepository.Create(education);
+
+                var role = _roleRepository.GetByName("User");
+
+                if (role is null)
+                {
+                    return null;
+                }
 
                 var accountRole = new AccountRole
                 {

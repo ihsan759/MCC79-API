@@ -9,7 +9,7 @@ using System.Net;
 namespace API.Controllers
 {
     [ApiController]
-    [Route("Api/Auth")]
+    [Route("Api/auth")]
     public class AuthController : ControllerBase
     {
         private readonly AuthService _authService;

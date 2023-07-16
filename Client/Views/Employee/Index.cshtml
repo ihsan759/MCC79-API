@@ -31,6 +31,7 @@
         <tbody>
             @foreach (var item in Model)
             {
+                string format = item.BirthDate.ToString("dd MMMM yyyy");
                 <tr>
                     <td>
                         @Html.DisplayFor(modelItem => no)
@@ -45,13 +46,13 @@
                         @Html.DisplayFor(modelItem => item.Gender)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.BirthDate)
+                        @Html.DisplayFor(modelItem => format)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Email)
                     </td>
-                    <td>
-                        @Html.ActionLink("Edit", "Edit", new { guid=item.Guid })
+                    <td class="d-flex">
+                        <a href="/employee/edit?guid=@item.Guid" class="btn btn-warning me-2">Edit</a>
                         <form action="/employee/delete" method="post">
                             <input type="hidden" value="@item.Guid" name="guid"/>
                             <button type="submit" class="btn btn-danger">Delete</button>

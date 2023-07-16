@@ -1,4 +1,5 @@
 ﻿using API.Utilities.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace API.DTOs.Employees
 {
@@ -11,6 +12,7 @@ namespace API.DTOs.Employees
         public DateTime BirthDate { get; set; }
         public GenderEnum Gender { get; set; }
         public DateTime HiringDate { get; set; }
+        [EmailAddress]
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
     }

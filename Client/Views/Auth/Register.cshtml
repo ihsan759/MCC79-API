@@ -1,23 +1,31 @@
-﻿@model API.DTOs.Employees.GetEmployeeDto
+﻿@model Client.DTOs.Auth.RegisterDto
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Register";
 }
 
-<h1>Create</h1>
+<h1>Register</h1>
 
-<h4>GetEmployeeDto</h4>
+<h4>RegisterDto</h4>
+
+@if (TempData["Error"] != null)
+{
+    <div class="toast align-items-center text-white bg-success top-0 end-0 border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                @TempData["Error"]
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+}
+
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form action="/Employee/Create" method="POST">
+        <form action="/auth/register" method="post">
             @Html.AntiForgeryToken()
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Nik" class="control-label"></label>
-                <input asp-for="Nik" class="form-control" />
-                <span asp-validation-for="Nik" class="text-danger"></span>
-            </div>
             <div class="form-group">
                 <label asp-for="FirstName" class="control-label"></label>
                 <input asp-for="FirstName" class="form-control" />
@@ -48,7 +56,6 @@
                     </label>
                 </div>
             </div>
-            <span asp-validation-for="Gender" class="text-danger"></span>
             <div class="form-group">
                 <label asp-for="HiringDate" class="control-label"></label>
                 <input asp-for="HiringDate" class="form-control" />
@@ -64,7 +71,42 @@
                 <input asp-for="PhoneNumber" class="form-control" />
                 <span asp-validation-for="PhoneNumber" class="text-danger"></span>
             </div>
-            <div class="form-group mt-2">
+            <div class="form-group">
+                <label asp-for="Major" class="control-label"></label>
+                <input asp-for="Major" class="form-control" />
+                <span asp-validation-for="Major" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Degree" class="control-label"></label>
+                <input asp-for="Degree" class="form-control" />
+                <span asp-validation-for="Degree" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Gpa" class="control-label"></label>
+                <input asp-for="Gpa" class="form-control" />
+                <span asp-validation-for="Gpa" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UniversityCode" class="control-label"></label>
+                <input asp-for="UniversityCode" class="form-control" />
+                <span asp-validation-for="UniversityCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UniversityName" class="control-label"></label>
+                <input asp-for="UniversityName" class="form-control" />
+                <span asp-validation-for="UniversityName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ConfirmPassword" class="control-label"></label>
+                <input asp-for="ConfirmPassword" class="form-control" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>

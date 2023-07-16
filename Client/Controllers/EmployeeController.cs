@@ -32,6 +32,7 @@ namespace Client.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(GetEmployeeDto newEmploye)
         {
 

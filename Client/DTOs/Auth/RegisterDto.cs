@@ -2,7 +2,7 @@
 using API.Utilities.Enums;
 using System.ComponentModel.DataAnnotations;
 
-namespace API.DTOs.Auth
+namespace Client.DTOs.Auth
 {
     public class RegisterDto
     {
